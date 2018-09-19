@@ -111,11 +111,23 @@ class WarehouseService extends BaseService
         return null;
     }
 
+    public function getWarehousesWithItem($itemId)
+    {
+        $warehouses = $this->getAllWarehouses();
+        $warehouseList = [];
+        foreach ($warehouses as $warehouse)
+        {
+            if ($warehouse->findItem($itemId)) {
+                $warehouseList[$warehouse->getId()]= $warehouse;
+            }
+        }
+        if(sizeof($warehouseList) == 0)
+            return null;
+        return $warehouseList;
+    }
+
     public function addItemInWarehouse(Warehouse $warehouse, Item $item, $quantity)
     {
-        if($warehouse->getRemainingSpace() < $item->getSize() * $quantity)
-            throw new \InvalidArgumentException("Не хватает места");
-        //$warehouse->addItem(new ItemPack($item, $quantity));
         if($warehouse->findItem($item->getId())) {
             $request = 'UPDATE StoredItems SET Quantity = :quantity WHERE Warehouse_id = :warehouse AND Item_id = :item';
             $quantity += $warehouse->getItemPack($item->getId())->getQuantity();
@@ -131,9 +143,6 @@ class WarehouseService extends BaseService
 
     public function removeItemFromWarehouse(Warehouse $warehouse, Item $item, $quantity)
     {
-        if($warehouse->getItemPack($item->getId())->getQuantity() < $quantity)
-            throw new \InvalidArgumentException("Не хватает товара");
-        //$warehouse->removeItem(new ItemPack($item, $quantity));
         if($warehouse->getItemPack($item->getId())->getQuantity() == $quantity) {
             $request = 'DELETE FROM StoredItems WHERE Warehouse_id = :warehouse AND Item_id = :item AND Quantity = :quantity';
         } else {

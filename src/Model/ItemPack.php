@@ -68,4 +68,10 @@ class ItemPack
     {
         return new self($itemPack->getItem(), $this->quantity - $itemPack->getQuantity());
     }
+
+    public function calcPackPrice()
+    {
+        $sum = $this->getPrice() * $this->quantity;
+        return $sum;
+    }
 }

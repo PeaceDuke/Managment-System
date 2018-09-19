@@ -107,4 +107,14 @@ class Warehouse
         return false;
     }
 
+    public function calcAllItemPrice()
+    {
+        $sum = 0;
+        foreach ($this->itemPacks as $itemPack)
+        {
+            $sum += $itemPack->getPrice() * $itemPack->getQuantity();
+        }
+        return $sum;
+    }
+
 }

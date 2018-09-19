@@ -16,6 +16,9 @@ $app->group('/managementsystem',function () use ($app) {
             $app->post('/export', 'WarehouseController:exportItemsFromWarehouse'); //отправить поставщику
             $app->post('/transfer', 'WarehouseController:moveItemsToWarehouse'); //отправить на другой склад
             $app->group('/history',function () use ($app) {
+                $app->get('/', function (){
+                    echo "movement | state для дальнейшей работы";
+                });
                 $app->get('/movement', 'WarehouseController:getMovementOnWarehouse'); //получить движения связанные со складом
                 $app->post('/state', 'WarehouseController:getWarehouseStateOnDate'); //получить состояние склада на дату
             });
@@ -30,6 +33,9 @@ $app->group('/managementsystem',function () use ($app) {
             $app->get('/delete', 'ItemController:deleteItem'); //удалить информацию о итеме
             $app->get('/find', 'WarehouseController:getItemInWarehouses'); //полчить все склады с товаром
             $app->group('/history',function () use ($app) {
+                $app->get('/', function (){
+                    echo "movement | state для дальнейшей работы";
+                });
                 $app->get('/movement', 'WarehouseController:getItemMovement'); //получить движения связанные со товаром
                 $app->post('/state', 'WarehouseController:getItemInWarehousesOnDate'); //получить состояние товара на складах на дату
             });
@@ -43,7 +49,7 @@ $app->group('/managementsystem',function () use ($app) {
             $app->post('/update', 'UserController:updateUser'); //обновить информацию о юзере
             $app->get('/delete', 'UserController:deleteUser'); //удалить информацию о юзере
         });
-        $app->get('/aboutme', 'UserController:getCurrentUserInfo'); //получить список всех юзеров
+        $app->get('/aboutme', 'UserController:getCurrentUserInfo'); //получить н
     });
     $app->get('/logout', function (){
         session_unset();

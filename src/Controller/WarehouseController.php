@@ -32,11 +32,6 @@ class WarehouseController
         $this->itemService = $itemService;
     }
 
-    public function index(Request $request, Response $response)
-    {
-        return $response->getBody()->write("Hello, MVC practice");
-    }
-
     public function addWarehouse(Request $request, Response $response, $args)
     {
         $bodyParams = $request->getParsedBody();
@@ -89,7 +84,7 @@ class WarehouseController
             $sum = 0;
             foreach ($warehouse->getItemPacks() as $itemPack) {
                 $output = $output . $itemPack->getName() . ": " . $itemPack->getQuantity() . "\n";
-                $sum += $itemPack->getQuantity() * $itemPack->getPrice();
+                $sum += $itemPack->calcPackPrice();
             }
             $output = $output . "Общая стоимость товаров: " . $sum . "у.е";
             return $response->getBody()->write($output);
@@ -116,16 +111,14 @@ class WarehouseController
         $id = $args['id'];
         $item = $this->itemService->getItem($id);
         if (isset($item)) {
-            $warehouses = $this->warehouseService->getAllWarehouses();
+            $warehouses = $this->warehouseService->getWarehousesWithItem($id);
             if (isset($warehouses)) {
                 $output = "Товар: " . $item->getName() . " есть на складах:\n";
                 $sum = 0;
                 foreach ($warehouses as $warehouse) {
                     $pack = $warehouse->getItemPack($id);
-                    if (isset($pack)) {
-                        $output = $output . $warehouse->getAddress() . ": " . $pack->getQuantity() . "\n";
-                        $sum += $pack->getPrice() * $pack->getQuantity();
-                    }
+                    $output = $output . $warehouse->getAddress() . ": " . $pack->getQuantity() . "\n";
+                    $sum += $pack->getPackPrice();
                 }
                 $output = $output . "Общая стоимиость: " . $sum . " У.е";
                 return $response->getBody()->write($output);
