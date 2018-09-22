@@ -65,4 +65,10 @@ class Item
     {
         return $this->size;
     }
+
+    public function getFullInfo()
+    {
+        return "Id: " . $this->id . "\nName: " . $this->name . "\nType: " . $this->type . "\nPrice: "
+            . $this->price . "\nSize: " . $this->size;
+    }
 }

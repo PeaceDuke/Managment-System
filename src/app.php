@@ -1,8 +1,11 @@
 <?php
 use App\Services\UserService;
 use App\Services\WarehouseService;
-use App\Services\TransactionService;
 use App\Services\ItemService;
+use App\Repository\ItemRepository;
+use App\Repository\TransactionRepository;
+use App\Repository\WarehouseRepository;
+use App\Repository\UserRepository;
 use App\Controller\WarehouseController;
 use App\Controller\ItemController;
 use App\Controller\UserController;
@@ -75,25 +78,42 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
-
 $container['WarehouseService'] = function($c) {
-    $db = $c->get('db');
-    return new WarehouseService($db);
+    $rep1 = $c->get('WarehouseRepository');
+    $rep2 = $c->get('TransactionRepository');
+    $rep3 = $c->get('ItemRepository');
+    return new WarehouseService($rep1, $rep2, $rep3);
 };
 
 $container['UserService'] = function($c) {
-    $db = $c->get('db');
-    return new UserService($db);
-};
-
-$container['TransactionService'] = function($c) {
-    $db = $c->get('db');
-    return new TransactionService($db);
+    $rep = $c->get('UserRepository');
+    return new UserService($rep);
 };
 
 $container['ItemService'] = function($c) {
+    $rep1 = $c->get('ItemRepository');
+    $rep2 = $c->get('TransactionRepository');
+    $rep3 = $c->get('WarehouseRepository');
+    return new ItemService($rep1, $rep2, $rep3);
+};
+$container['WarehouseRepository'] = function($c) {
     $db = $c->get('db');
-    return new ItemService($db);
+    return new WarehouseRepository($db);
+};
+
+$container['UserRepository'] = function($c) {
+    $db = $c->get('db');
+    return new UserRepository($db);
+};
+
+$container['TransactionRepository'] = function($c) {
+    $db = $c->get('db');
+    return new TransactionRepository($db);
+};
+
+$container['ItemRepository'] = function($c) {
+    $db = $c->get('db');
+    return new ItemRepository($db);
 };
 
 $container['WarehouseController'] = function($c) {
@@ -111,6 +131,14 @@ $container['ItemController'] = function($c) {
 $container['UserController'] = function($c) {
     $userService = $c->get('UserService');
     return new UserController($userService);
+};
+
+$container['errorHandler'] = function ($c) {
+    return function ($request, $response, Exception $exception) use ($c) {
+        return $c['response']->withStatus($exception->getCode())
+            ->withHeader('Content-Type', 'text/html')
+            ->write($exception->getMessage());
+    };
 };
 
 require __DIR__ . '/router.php';

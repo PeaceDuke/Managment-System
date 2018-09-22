@@ -7,11 +7,11 @@ $app->get('/', function (){
 $app->group('/managementsystem',function () use ($app) {
     $app->group('/warehouses',function () use ($app) {
         $app->get('/', 'WarehouseController:getWarehousesList'); //получить список складов
-        $app->post('/create', 'WarehouseController:addWarehouse'); //добавить склад
+        $app->post('/', 'WarehouseController:addWarehouse'); //добавить склад
         $app->group('/{id}',function () use ($app) {
             $app->get('/', 'WarehouseController:getWarehouseInfo'); //полчить инофрмацию о одном складе
-            $app->post('/update', 'WarehouseController:updateWarehouse'); //обновить информацию о складе
-            $app->get('/delete', 'WarehouseController:deleteWarehouse'); //удалить информацию о складе
+            $app->put('/', 'WarehouseController:updateWarehouse'); //обновить информацию о складе
+            $app->delete('/', 'WarehouseController:deleteWarehouse'); //удалить информацию о складе
             $app->post('/request', 'WarehouseController:requestItemsToWarehouse'); //запросить у поставщика
             $app->post('/export', 'WarehouseController:exportItemsFromWarehouse'); //отправить поставщику
             $app->post('/transfer', 'WarehouseController:moveItemsToWarehouse'); //отправить на другой склад
@@ -26,30 +26,29 @@ $app->group('/managementsystem',function () use ($app) {
     });
     $app->group('/items',function () use ($app) {
         $app->get('/', 'ItemController:getItemsList'); //получить список всех итемов
-        $app->post('/create', 'ItemController:addItem'); //добавить итем
+        $app->post('/', 'ItemController:addItem'); //добавить итем
         $app->group('/{id}',function () use ($app) {
             $app->get('/', 'ItemController:getItemInfo'); //получить информацию о итеме
-            $app->post('/update', 'ItemController:updateItem'); //обновить информацию о итеме
-            $app->get('/delete', 'ItemController:deleteItem'); //удалить информацию о итеме
-            $app->get('/find', 'WarehouseController:getItemInWarehouses'); //полчить все склады с товаром
+            $app->put('/', 'ItemController:updateItem'); //обновить информацию о итеме
+            $app->delete('/', 'ItemController:deleteItem'); //удалить информацию о итеме
+            $app->get('/find', 'ItemController:getItemInWarehouses'); //полчить все склады с товаром
             $app->group('/history',function () use ($app) {
                 $app->get('/', function (){
                     echo "movement | state для дальнейшей работы";
                 });
-                $app->get('/movement', 'WarehouseController:getItemMovement'); //получить движения связанные со товаром
-                $app->post('/state', 'WarehouseController:getItemInWarehousesOnDate'); //получить состояние товара на складах на дату
+                $app->get('/movement', 'ItemController:getItemMovement'); //получить движения связанные со товаром
+                $app->post('/state', 'ItemController:getItemInWarehousesOnDate'); //получить состояние товара на складах на дату
             });
         });
     });
     $app->group('/users',function () use ($app) {
         $app->get('/', 'UserController:getUserList'); //получить список всех юзеров
-        $app->post('/create', 'UserController:addUser'); //добавить юзера
+        $app->post('/', 'UserController:addUser'); //добавить юзера
         $app->group('/{id}',function () use ($app) {
             $app->get('/', 'UserController:getUserInfo'); //получить информацию о юзере
-            $app->post('/update', 'UserController:updateUser'); //обновить информацию о юзере
-            $app->get('/delete', 'UserController:deleteUser'); //удалить информацию о юзере
+            $app->put('/', 'UserController:updateUser'); //обновить информацию о юзере
+            $app->delete('/', 'UserController:deleteUser'); //удалить информацию о юзере
         });
-        $app->get('/aboutme', 'UserController:getCurrentUserInfo'); //получить н
     });
     $app->get('/logout', function (){
         session_unset();

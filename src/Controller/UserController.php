@@ -9,15 +9,13 @@
 namespace App\Controller;
 
 
+use App\Services\UserRepository;
 use App\Services\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 class UserController
 {
-    /**
-     * @var UserService
-     */
     private $userService;
 
     public function __construct(UserService $userService)
@@ -28,25 +26,10 @@ class UserController
     public function addUser(Request $request, Response $response, $args)
     {
         //доступно только админу
-        if ($_SESSION['userType'] == 'Admin') {
-            $bodyParams = $request->getParsedBody();
-            $firstname = $bodyParams['firstname'];
-            $secondname = $bodyParams['secondname'];
-            $email = $bodyParams['email'];
-            $password = $bodyParams['password'];
-            $phonenumber = $bodyParams['phonenumber'];
-            $company = $bodyParams['company'];
-            $perms = $bodyParams['perms'];
-            if (isset($firstname) && isset($secondname) && isset($email) && isset($password)
-                && isset($phonenumber) && isset($company) && isset($perms)) {
-                $user = $this->userService->addNewUser($firstname, $secondname, $email, $password, $phonenumber, $company, $perms);
-                return $response->getBody()->write("Создан новый пользователь\n" . $user->getFullInfo());
-            } else {
-                return $response->getBody()->write('Указаны не все параметры');
-            }
-        } else {
-            return $response->getBody()->write("У вас нет доступа к этой функции");
-        }
+        $bodyParams = $request->getParsedBody();
+        $user = $this->userService->addNewUser($bodyParams['firstname'], $bodyParams['secondname'], $bodyParams['email'],
+            $bodyParams['password'], $bodyParams['phonenumber'], $bodyParams['company'], $bodyParams['perms']);
+        return $response->getBody()->write("Создан новый пользователь\n" . $user->getFullInfo());
 
     }
 

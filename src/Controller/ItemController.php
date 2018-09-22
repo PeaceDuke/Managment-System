@@ -27,81 +27,60 @@ class ItemController
     public function addItem(Request $request, Response $response, $args)
     {
         $bodyParams = $request->getParsedBody();
-        $name = $bodyParams['name'];
-        $type = $bodyParams['type'];
-        $price = $bodyParams['price'];
-        $size = $bodyParams['size'];
-
-        if(isset($type) && isset($name) && isset($price) && isset($size)) {
-            $item = $this->itemService->addNewItem($name, $type, $price, $size);
-            return $response->getBody()->write("Товар добавлен\nId: " . $item->getId() . "\nName: " . $item->getName()
-                . "\nType: " . $item->getType(). "\nPrice: " . $item->getPrice(). "\nSize: " . $item->getSize());
-        }
-        else
-        {
-            return $response->getBody()->write('Указаны не все параметры');
-        }
+        $item = $this->itemService->addNewItem($bodyParams['name'], $bodyParams['type'], $bodyParams['price'], $bodyParams['size']);
+        return $response->getBody()->write("Товар добавлен\n" . $item->getFullInfo());
     }
 
     public function updateItem(Request $request, Response $response, $args)
     {
-        $id = $args['id'];
-        $item = $this->itemService->getItem($id);
-        if(isset($item)) {
-            $bodyParams = $request->getParsedBody();
-            $type = $bodyParams['type'];
-            $name = $bodyParams['name'];
-            $price = $bodyParams['price'];
-            $size = $bodyParams['size'];
-            $item = $this->itemService->updateItem($item, $name, $type, $price, $size);
-            return $response->getBody()->write("Товар обновлен\nId: " . $item->getId() . "\nName: " . $item->getName()
-                . "\nType: " . $item->getType(). "\nPrice: " . $item->getPrice(). "\nSize: " . $item->getSize());
-        }
-        else{
-            return $response->getBody()->write("Данный товар недоступен или не существует");
-        }
+        $itemId = $args['id'];
+        $bodyParams = $request->getParsedBody();
+        $item = $this->itemService->updateItem($itemId, $bodyParams['name'], $bodyParams['type'], $bodyParams['price'], $bodyParams['size']);
+        return $response->getBody()->write("Товар обновлен\n" . $item->getFullInfo());
     }
 
     public function deleteItem(Request $request, Response $response, $args)
     {
-        $id = $args['id'];
-        $item = $this->itemService->getItem($id);
-        if(isset($item)) {
-            $this->itemService->deleteItem($id);
-            return $response->getBody()->write("Товар " . $item->getName() . " удален");
-        }
-        else{
-            return $response->getBody()->write("Данный товар недоступен или не существует");
-        }
+        $itemId = $args['id'];
+        $name = $this->itemService->deleteItem($itemId);
+        return $response->getBody()->write("Товар " . $name . " удален");
     }
 
     public function getItemInfo(Request $request, Response $response, $args)
     {
-        $id = $args['id'];
-        $item = $this->itemService->getItem($id);
-        if(isset($item)) {
-            return $response->getBody()->write("Ифнормация о товаре\nId: " . $item->getId() . "\nName: " . $item->getName()
-                . "\nType: " . $item->getType() . "\nSize: " . $item->getSize() . "\nPrice: " . $item->getPrice());
-        }
-        else{
-            return $response->getBody()->write("Данный склад недоступен или не существует");
-        }
+        $itemId = $args['id'];
+        $item = $this->itemService->getItem($itemId);
+        return $response->getBody()->write("Ифнормация о товаре\n" . $item->getFullInfo());
     }
 
-    public  function getItemsList(Request $request, Response $response, $args)
+    public function getItemsList(Request $request, Response $response, $args)
     {
         $items = $this->itemService->getAllItem();
-        if(!isset($items))
-            return $response->getBody()->write('У вас не зарегестрированных товаров');
-        if(isset($items)) {
-            $output = "Список всех товаров\n";
-            foreach ($items as $item) {
-                $output = $output . "Id: " . $item->getId() . " Name: " . $item->getName() . "\n";
-            }
-            return $response->getBody()->write($output);
+        $output = "Список всех товаров\n";
+        foreach ($items as $item) {
+            $output = $output . "Id: " . $item->getId() . " Name: " . $item->getName() . "\n";
         }
-        else{
-            return $response->getBody()->write("Данный склад пуст");
-        }
+        return $response->getBody()->write($output);
     }
+
+    public function getItemMovement(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $out = $this->itemService->getItemMovement($id);
+        return $out;
+    }
+
+    public function getItemInWarehousesOnDate(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        try {
+            $bodyParams = $request->getParsedBody();
+            $date = new \DateTime($bodyParams['date']);
+        } catch (\Exception $exception) {
+            throw new \Exception('При конвертации даты произошла ошибка: ' . $exception->getMessage(), 400);
+        }
+        $out = $this->itemService->getItemInWarehousesOnDate($id, $date);
+        return $response->getBody()->write($out);
+    }
+
 }

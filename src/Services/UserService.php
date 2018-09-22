@@ -9,112 +9,75 @@
 namespace App\Services;
 
 use App\Model\User;
+use App\Repository\UserRepository;
 
-class UserService extends BaseService
+class UserService
 {
-    public function __construct($db)
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
-        parent::__construct($db);
+        $this->userRepository = $userRepository;
     }
 
     public function addNewUser($firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
     {
-        $query = $this->db->prepare('INSERT INTO User (Company, FirstName, SecondName, `E-mail`, Password, Salt, PhoneNumber, Permission) 
-            VALUES (:company, :fname, :sname, :mail, :pass, :salt, :number, :perms)');
-        $salt = sha1(microtime());
-        $password = ($password . $salt);
-        $query->bindParam(':company', $company, \PDO::PARAM_STR);
-        $query->bindParam(':fname', $firstname, \PDO::PARAM_STR);
-        $query->bindParam(':sname', $secondname, \PDO::PARAM_STR);
-        $query->bindParam(':mail', $email, \PDO::PARAM_STR);
-        $query->bindParam(':pass', $password, \PDO::PARAM_STR);
-        $query->bindParam(':salt', $salt, \PDO::PARAM_STR);
-        $query->bindParam(':number', $phonenumber, \PDO::PARAM_STR);
-        $query->bindParam(':perms', $perms, \PDO::PARAM_STR);
-        $query->execute();
-        $query = $this->db->prepare('SELECT LAST_INSERT_ID()');
-        $query->execute();
-        $res = $query->fetch(\PDO::FETCH_ASSOC);
-        $user = new User($res['LAST_INSERT_ID()'], $firstname, $secondname, $email, $phonenumber, $company, $perms);
-        return $user;
-    }
-
-    public function updateUser(User $user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
-    {
-        $query = $this->db->prepare('UPDATE User SET Company = :company, FirstName = :fname, SecondName = :sname, `E-mail` = :mail,
-             Password = :pass, Salt = :salt, PhoneNumber = :number, Permission = :perms WHERE id = :id');
-        $salt = sha1(microtime());
-        if(!isset($firstname) || $firstname == '')
-            $firstname = $user->getFirstname();
-        if(!isset($secondname) || $secondname == '')
-            $secondname = $user->getSecondname();
-        if(!isset($email) || $email == '')
-            $email = $user->getEmail();
-        if(!isset($password) || $password == '')
-            $password = ($password . $salt);
-        if(!isset($phonenumber) || $phonenumber == '')
-            $phonenumber = $user->getPhonenumber();
-        if(!isset($company) || $company == '')
-            $company = $user->getCompany();
-        if(!isset($perms) || $perms == '')
-            $perms = $user->getPerms();
-        $query->bindParam(':id', $user->getId(), \PDO::PARAM_INT);
-        $query->bindParam(':company', $company, \PDO::PARAM_STR);
-        $query->bindParam(':fname', $firstname, \PDO::PARAM_STR);
-        $query->bindParam(':sname', $secondname, \PDO::PARAM_STR);
-        $query->bindParam(':mail', $email, \PDO::PARAM_STR);
-        $query->bindParam(':pass', $password, \PDO::PARAM_STR);
-        $query->bindParam(':salt', $salt, \PDO::PARAM_STR);
-        $query->bindParam(':number', $phonenumber, \PDO::PARAM_STR);
-        $query->bindParam(':perms', $perms, \PDO::PARAM_STR);
-        $query->execute();
-        return new User($user->getId(), $firstname, $secondname, $email, $phonenumber, $company, $perms);
-    }
-
-    public function deleteUser($user)
-    {
-        $query = $this->db->prepare('SELECT id FROM Warehouse WHERE Owner_id = :id');
-        $query->bindParam(':id', $user->getId(), \PDO::PARAM_INT);
-        $query->execute();
-        $res = $query->fetchAll();
-        foreach ($res as $warehouse)
-        {
-            $query = $this->db->prepare('DELETE FROM StoredItems WHERE Warehouse_id = :id;
-                DELETE FROM Transaction WHERE Whin_id = :id OR Whout_id = :id;');
-            $query->execute();
+        if ($_SESSION['userType'] == 'Admin') {
+            if (isset($firstname) && isset($secondname) && isset($email) && isset($password) &&
+                isset($phonenumber) && isset($company) && isset($perms)) {
+                return $this->userRepository->addNewUser($firstname, $secondname, $email, $password,
+                    $phonenumber, $company, $perms);
+            } else {
+                throw new \Exception("400 Bad Request Указаны не все данные", 400);
+            }
+        } else {
+            throw new \Exception('403 Forbidden Доступно только администратору', 403);
         }
-        $query = $this->db->prepare('DELETE FROM Item WHERE Owner_id = :id;
-            DELETE FROM User WHERE id = :id;');
-        $query->bindParam(':id', $user->getId(), \PDO::PARAM_INT);
-        $query->execute();
     }
 
-    /**
-     * @param $id
-     * @return User
-     */
-    public function getUser($id)
+    public function updateUser($userId, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
     {
-        $query = $this->db->prepare('SELECT * FROM User WHERE id = :id');
-        $query->bindParam(':id', $id, \PDO::PARAM_INT);
-        $query->execute();
-        $res = $query->fetch(\PDO::FETCH_ASSOC);
-        if($res) {
-            return new User($id, $res['FirstName'], $res['SecondName'], $res['E-mail'], $res['PhoneNumber'], $res['Company'], $res['Permission']);
+        if ($_SESSION['userType'] == 'Admin' || $_SESSION['userId'] == $userId) {
+            $user = $this->userRepository->getUser($userId);
+            if(!is_null($user)) {
+                return $this->userRepository->updateUser($user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms);
+            } else {
+                throw new \Exception("404 Not Found Данного пользователя не существует", 404);
+            }
+        } else {
+            throw new \Exception('403 Forbidden Доступно только администратору', 403);
         }
-        return null;
+    }
+
+    public function deleteUser($userId)
+    {
+        if ($_SESSION['userType'] == 'Admin' || $_SESSION['userId'] == $userId) {
+            $user = $this->userRepository->getUser($userId);
+            if(!is_null($user)) {
+                $this->userRepository->deleteUser($userId);
+            } else {
+                throw new \Exception("404 Not Found Данного пользователя не существует", 404);
+            }
+        } else {
+            throw new \Exception('403 Forbidden Доступно только администратору', 403);
+        }
+    }
+
+    public function getUser($userId)
+    {
+        if ($_SESSION['userType'] == 'Admin' || $_SESSION['userId'] == $userId) {
+            return $this->userRepository->getUser($userId);
+        } else {
+            throw new \Exception('403 Forbidden Доступно только администратору', 403);
+        }
     }
 
     public function getUserList()
     {
-        $query = $this->db->prepare('SELECT * FROM User');
-        $query->bindParam(':id', $id, \PDO::PARAM_INT);
-        $query->execute();
-        $res = $query->fetchAll(\PDO::FETCH_ASSOC);
-        $userList = [];
-        foreach ($res as $user){
-            $userList[$user['id']] = new User($user['id'], $user['FirstName'], $user['SecondName'], $user['E-mail'], $user['PhoneNumber'], $user['Company'], $user['Permission']);
+        if ($_SESSION['userType'] == 'Admin') {
+            return $this->userRepository->getUserList();
+        } else {
+            throw new \Exception('403 Forbidden Доступно только администратору', 403);
         }
-        return $userList;
     }
 }

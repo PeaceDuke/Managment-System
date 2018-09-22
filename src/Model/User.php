@@ -18,8 +18,10 @@ class User
     private $phonenumber;
     private $company;
     private $perms;
+    private $salt;
+    private $password;
 
-    public function __construct($id, $firstname, $secondname, $email, $phonenumber, $company, $perms)
+    public function __construct($id, $firstname, $secondname, $email, $phonenumber, $company, $perms, $password, $salt)
     {
         $this->id = $id;
         $this->firstname = $firstname;
@@ -84,6 +86,22 @@ class User
     public function getPerms()
     {
         return $this->perms;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+        return $this->password;
     }
 
     public function getFullInfo()
