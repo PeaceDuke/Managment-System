@@ -43,6 +43,7 @@ class ItemRepository
     public function updateItem($item, $name, $type, $price, $size)
     {
         $query = $this->db->prepare('UPDATE Item SET Name = ?, Type = ?, Price = ?, Size = ? WHERE id = ?');
+        var_dump($name);
         $name = (!isset($name) ? $item->getName() : $name);
         $type = (!isset($type) ? $item->getType() : $type);
         $price = (!isset($price) ? $item->getPrice() : $price);

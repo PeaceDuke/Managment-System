@@ -107,7 +107,7 @@ class User
     public function getFullInfo()
     {
         return 'Id: ' . $this->id . "\nFirst name: " . $this->firstname . "\nSecond name: " . $this->secondname . "\nE-mail: "
-            . $this->email . "\nPhone Number: " . $this->phonenumber . "\nCompany: " . $this->company . ($this->perms ? "\nIs admin\n\n" : "\n\n");
+            . $this->email . "\nPhone Number: " . $this->phonenumber . "\nCompany: " . $this->company . ($this->perms == "Admin" ? "\nIs admin\n\n" : "\n\n");
     }
 
 }

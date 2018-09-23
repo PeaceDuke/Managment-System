@@ -16,19 +16,14 @@ class WarehouseController
      */
     private $warehouseService;
     /**
-     * @var TransactionService
-     */
-    private $transactionService;
-    /**
      * @var ItemService
      */
     private $itemService;
 
 
-    public function __construct(WarehouseService $warehouseService, TransactionService $transactionService, ItemService $itemService)
+    public function __construct(WarehouseService $warehouseService, ItemService $itemService)
     {
         $this->warehouseService = $warehouseService;
-        $this->transactionService = $transactionService;
         $this->itemService = $itemService;
     }
 

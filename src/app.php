@@ -33,9 +33,9 @@ $container = $app->getContainer();
 
 function checkUser($login, $password) {
     $options = array(
-        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
     );
-    $pdo = new PDO('mysql:host=localhost;dbname=WarehouseManagement;charset=utf8', 'root', 'root', $options);
+    $pdo = new \PDO('mysql:host=localhost;dbname=WarehouseManagement;charset=utf8', 'root', 'root', $options);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     $query = $pdo->prepare('SELECT id, Salt, Password, Permission FROM User WHERE `E-mail` = :login');
@@ -72,7 +72,7 @@ else
 // Register component on container
 $container['db'] = function ($c) {
     $db = $c->get('settings')['db'];
-    $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['username'], $db['password']);
+    $pdo = new \PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['username'], $db['password']);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
@@ -118,9 +118,8 @@ $container['ItemRepository'] = function($c) {
 
 $container['WarehouseController'] = function($c) {
     $warehouseService = $c->get('WarehouseService');
-    $transactionService = $c->get('TransactionService');
     $itemService = $c->get('ItemService');
-    return new WarehouseController($warehouseService, $transactionService, $itemService);
+    return new WarehouseController($warehouseService, $itemService);
 };
 
 $container['ItemController'] = function($c) {
@@ -135,7 +134,7 @@ $container['UserController'] = function($c) {
 
 $container['errorHandler'] = function ($c) {
     return function ($request, $response, Exception $exception) use ($c) {
-        return $c['response']->withStatus($exception->getCode())
+        return $c['response']->withStatus($exception->getCode() ? 500 : $exception->getCode())
             ->withHeader('Content-Type', 'text/html')
             ->write($exception->getMessage());
     };

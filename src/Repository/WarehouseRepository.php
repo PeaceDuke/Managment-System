@@ -137,15 +137,16 @@ class WarehouseRepository
             WHERE Item_id = 1;');
         $query->execute([$itemId]);
         $res = $query->fetchAll(\PDO::FETCH_ASSOC);
-        $warehouses = [];
         if(isset($res[0])){
+            $warehouses = [];
             foreach ($res as $warehouse)
             {
                 $warehouses[$warehouse['Warehouse_id']] = new Warehouse($warehouse['Warehouse_id'], $warehouse['Address'],
                     [new ItemPack(new Item($warehouse['Item_id'], $warehouse['Name'], $warehouse['Type'],
                         $warehouse['Price'], $warehouse['Size']), $warehouse['Quantity'])], $warehouse['Capacity']);
             }
+            return $warehouses;
         }
-        return $warehouses;
+        return null;
     }
 }

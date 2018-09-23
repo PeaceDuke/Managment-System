@@ -35,7 +35,11 @@ class WarehouseService
     {
         $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
         if (isset($warehouse)) {
-            return $this->warehouseRepository->updateWarehouse($warehouseId, $address, $capacity);
+            if($warehouse->getRemainingSpace() >= $warehouse->getCapacity() - $capacity) {
+                return $this->warehouseRepository->updateWarehouse($warehouseId, $address, $capacity);
+            } else {
+                throw new \Exception("400 Bad Request Текущие товары на складе не помещаются в новый объем", 400);
+            }
         } else {
             throw new \Exception("404 Not Found Данный склад не доступен или не существует", 404);
         }
@@ -46,8 +50,13 @@ class WarehouseService
     {
         $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
         if (isset($warehouse)) {
-            $this->warehouseRepository->deleteWarehouse($warehouseId);
-            return $warehouse->getAddress();
+            $transactions = $this->transactionRepository->getMovementOnWarehouse($warehouseId, new \DateTime());
+            if(!isset($transactions)) {
+                $this->warehouseRepository->deleteWarehouse($warehouseId);
+                return $warehouse->getAddress();
+            } else {
+                throw new \Exception("400 Bad Request По данному складу были перемещения, удаление невозможно", 400);
+            }
         } else {
             throw new \Exception("404 Not Found Данный склад не доступен или не существует", 404);
         }
@@ -87,6 +96,9 @@ class WarehouseService
                 if (isset($items)) {
                     $itemsList = [];
                     $totalSize = 0;
+                    if ($totalSize > $whIn->getRemainingSpace()) {
+                        throw new \Exception('400 Bad Request На складе по адресу ' . $whIn->getAddress() . ' недостаточно места', 400);
+                    }
                     foreach ($items as $key => $val) {
                         $item = $this->itemRepository->getItem($key);
                         if (is_null($item))
@@ -96,9 +108,6 @@ class WarehouseService
                             throw new \Exception('400 Bad Request На складе по адресу ' . $whOut->getAddress() . ' недостаточно товара ' . $item->getName(), 400);
                         }
                         $totalSize += $item->getSize() * $val;
-                    }
-                    if ($totalSize > $whIn->getRemainingSpace()) {
-                        throw new \Exception('400 Bad Request На складе по адресу ' . $whIn->getAddress() . ' недостаточно места', 400);
                     }
                     $output = "Со склада по адресу " . $whOut->getAddress()
                         . " на склад по адресу " . $whIn->getAddress() . " отправленно: \n";
@@ -127,15 +136,15 @@ class WarehouseService
             if (isset($items)) {
                 $itemsList = [];
                 $totalSize = 0;
+                if ($totalSize > $whIn->getRemainingSpace()) {
+                    throw new \Exception('400 Bad Request На складе по адресу ' . $whIn->getAddress() . ' недостаточно места', 400);
+                }
                 foreach ($items as $key => $val) {
                     $item = $this->itemRepository->getItem($key);
                     if (is_null($item))
                         throw new \Exception("400 Bad Request Товар с id:" . $key . " недоступен или не существует", 400);
                     $itemsList[$key] = new ItemPack($item, $val);
                     $totalSize += $item->getSize() * $val;
-                }
-                if ($totalSize > $whIn->getRemainingSpace()) {
-                    throw new \Exception('400 Bad Request На складе по адресу ' . $whIn->getAddress() . ' недостаточно места', 400);
                 }
                 $output = "На склад по адресу " . $whIn->getAddress() . " отправленно: \n";
                 foreach ($itemsList as $item) {

@@ -12,9 +12,9 @@ $app->group('/managementsystem',function () use ($app) {
             $app->get('/', 'WarehouseController:getWarehouseInfo'); //полчить инофрмацию о одном складе
             $app->put('/', 'WarehouseController:updateWarehouse'); //обновить информацию о складе
             $app->delete('/', 'WarehouseController:deleteWarehouse'); //удалить информацию о складе
-            $app->post('/request', 'WarehouseController:requestItemsToWarehouse'); //запросить у поставщика
-            $app->post('/export', 'WarehouseController:exportItemsFromWarehouse'); //отправить поставщику
-            $app->post('/transfer', 'WarehouseController:moveItemsToWarehouse'); //отправить на другой склад
+            $app->put('/request', 'WarehouseController:requestItemsToWarehouse'); //запросить у поставщика
+            $app->put('/export', 'WarehouseController:exportItemsFromWarehouse'); //отправить поставщику
+            $app->put('/transfer', 'WarehouseController:moveItemsToWarehouse'); //отправить на другой склад
             $app->group('/history',function () use ($app) {
                 $app->get('/', function (){
                     echo "movement | state для дальнейшей работы";

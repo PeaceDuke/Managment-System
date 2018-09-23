@@ -38,9 +38,15 @@ class ItemService
 
     public function updateItem($itemId, $name, $type, $price, $size)
     {
+        var_dump($name);
         $item = $this->getItem($itemId);
         if (isset($item)) {
-            return $this->itemRepository->updateItem($item, $name, $type, $price, $size);
+            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime());
+            if(!isset($transactions)) {
+                return $this->itemRepository->updateItem($item, $name, $type, $price, $size);
+            } else {
+                throw new \Exception("400 Bad Request За этим товаром числятся перемещения, невозможно удалить", 400);
+            }
         } else {
             throw new \Exception("404 Not Found Данный товар недоступен или не существует", 404);
         }
@@ -50,8 +56,13 @@ class ItemService
     {
         $item = $this->itemRepository->getItem($itemId);
         if(!is_null($item)) {
-            $this->itemRepository->deleteItem($itemId);
-            return $item->getName();
+            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime());
+            if(!isset($transactions)) {
+                $this->itemRepository->deleteItem($itemId);
+                return $item->getName();
+            } else {
+                throw new \Exception("400 Bad Request За этим товаром числятся перемещения, невозможно удалить", 400);
+            }
         } else {
             throw new \Exception("404 Not Found Данный товар недоступен или не существует", 404);
         }
@@ -80,6 +91,7 @@ class ItemService
             if (isset($warehouses) && sizeof($warehouses) != 0) {
                 $output = "Товар: " . $item->getName() . " есть на складах:\n";
                 $sum = 0;
+                var_dump($warehouses);
                 foreach ($warehouses as $warehouse) {
                     $pack = $warehouse->getItemPack($itemId);
                     $output = $output . $warehouse->getAddress() . ": " . $pack->getQuantity() . "\n";

@@ -6,9 +6,9 @@
 	"require-dev": {
         "phpunit/phpunit": "^7"
     },
-	"autoload-dev": {
+    "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests"
+            "App\\Tests\\": "tests"
         }
     },
     "autoload" : {

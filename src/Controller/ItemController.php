@@ -35,6 +35,7 @@ class ItemController
     {
         $itemId = $args['id'];
         $bodyParams = $request->getParsedBody();
+        var_dump($bodyParams);
         $item = $this->itemService->updateItem($itemId, $bodyParams['name'], $bodyParams['type'], $bodyParams['price'], $bodyParams['size']);
         return $response->getBody()->write("Товар обновлен\n" . $item->getFullInfo());
     }
@@ -80,6 +81,13 @@ class ItemController
             throw new \Exception('При конвертации даты произошла ошибка: ' . $exception->getMessage(), 400);
         }
         $out = $this->itemService->getItemInWarehousesOnDate($id, $date);
+        return $response->getBody()->write($out);
+    }
+
+    public function getItemInWarehouses(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $out = $this->itemService->getItemInWarehouses($id);
         return $response->getBody()->write($out);
     }
 

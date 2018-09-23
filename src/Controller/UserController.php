@@ -82,7 +82,7 @@ class UserController
             $id = $args['id'];
             $user = $this->userService->getUser($id);
             if (isset($user)) {
-                return $response->getBody()->write("Пользователь:\n " . $user->getFullInfo());
+                return $response->getBody()->write("Пользователь:\n" . $user->getFullInfo());
             } else {
                 return $response->getBody()->write("Данный пользователь не существует");
             }
@@ -95,24 +95,13 @@ class UserController
     {
         if ($_SESSION['userType'] == 'Admin') {
             $userList = $this->userService->getUserList();
-            $response->getBody()->write("Список пользователей:\n ");
+            $response->getBody()->write("Список пользователей:\n");
             foreach ($userList as $user) {
                 $response->getBody()->write($user->getFullInfo());
             }
             return $response;
         } else {
             return $response->getBody()->write("У вас нет доступа к этой функции");
-        }
-    }
-
-    public function getCurrentUserInfo(Request $request, Response $response, $args)
-    {
-        $id = $_SESSION['userId'];
-        $user = $this->userService->getUser($id);
-        if (isset($user)) {
-            return $response->getBody()->write("Вы:\n " . $user->getFullInfo());
-        } else {
-            return $response->getBody()->write("Данный пользователь не существует");
         }
     }
 
