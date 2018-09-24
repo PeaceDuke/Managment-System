@@ -36,12 +36,12 @@ function checkUser($login, $password) {
         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
     );
     $pdo = new \PDO('mysql:host=localhost;dbname=WarehouseManagement;charset=utf8', 'root', 'root', $options);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     $query = $pdo->prepare('SELECT id, Salt, Password, Permission FROM User WHERE `E-mail` = :login');
-    $query->bindParam(':login', $login, PDO::PARAM_STR_NATL);
+    $query->bindParam(':login', $login, \PDO::PARAM_STR_NATL);
     $query->execute();
-    $res = $query->fetch(PDO::FETCH_ASSOC);
+    $res = $query->fetch(\PDO::FETCH_ASSOC);
     //echo sha1($password . $res['Salt']);
     if(!isset($res))
         return false;
@@ -55,26 +55,24 @@ function checkUser($login, $password) {
 
 //Проверяем наличие и корректность присланных данных
 if (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
-    if(!isset($_SESSION['userId'])) {
-        if (!checkUser($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
-            echo ('Wrong login or password!');
-            header('HTTP/1.0 401 Unauthorized');
-        }
+    if (!checkUser($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])) {
+        echo ('401 Unauthorized Неверный логин или пароль');
+        header('HTTP/1.0 401 Unauthorized');
     }
 }
 else
 {
     header('WWW-Authenticate: Basic realm="Secured Zone"');
     header('HTTP/1.0 401 Unauthorized');
-    echo ('Authorization required!');
+    echo ('401 Unauthorized Необходима авторизация');
 }
 
 // Register component on container
 $container['db'] = function ($c) {
     $db = $c->get('settings')['db'];
     $pdo = new \PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'], $db['username'], $db['password']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     return $pdo;
 };
 
@@ -141,3 +139,5 @@ $container['errorHandler'] = function ($c) {
 };
 
 require __DIR__ . '/router.php';
+
+$app->run();

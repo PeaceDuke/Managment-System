@@ -1,0 +1,896 @@
+{
+	"variables": [],
+	"info": {
+		"name": "WarehouseManagement",
+		"_postman_id": "a25fd17e-82e5-537d-7795-6f88df99fcc0",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Действия с пользователями",
+			"description": "",
+			"item": [
+				{
+					"name": "Создание пользоавтеля (только администратор)",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/users/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "User",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "secondname",
+									"value": "Name",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "name@user.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phonenumber",
+									"value": "911",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "Google",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "perms",
+									"value": "User",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Список пользователей (только администратор)",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/users/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "User",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "secondname",
+									"value": "Name",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "name@user.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phonenumber",
+									"value": "911",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "Google",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "perms",
+									"value": "User",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление информации о пользователе (только администратор)",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/users/",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstname",
+									"value": "User",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "secondname",
+									"value": "Name",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "name@user.com",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"description": ""
+								},
+								{
+									"key": "phonenumber",
+									"value": "911",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "Google",
+									"description": "",
+									"disabled": true
+								},
+								{
+									"key": "perms",
+									"value": "User",
+									"description": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление информации о пользователе (только администратор)",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/users/3/",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "firstname",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "secondname",
+									"value": "NewName",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "phonenumber",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "perms",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Информация о пользователе",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/users/1/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Дествия с товарами",
+			"description": "",
+			"item": [
+				{
+					"name": "Список товаров пользователя",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Добавить новый товар",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "type",
+									"value": "Бухич",
+									"description": ""
+								},
+								{
+									"key": "price",
+									"value": "60",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Сидр",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Информация о товаре",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/2/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Видеокарта",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Электроника",
+									"description": ""
+								},
+								{
+									"key": "price",
+									"value": "1200",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "2",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск товара по всем складам",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/1/find",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Видеокарта",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Электроника",
+									"description": ""
+								},
+								{
+									"key": "price",
+									"value": "1200",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "2",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Информация о товаре на складах на определенню дату",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/1/history/state",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "date",
+									"value": "2001-12-18",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "История перемещений товара",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/1/history/movement",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Видеокарта",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "Электроника",
+									"description": ""
+								},
+								{
+									"key": "price",
+									"value": "1200",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "2",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить информацию о товаре",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/2/",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Морожено",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить товар товар",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/items/3/",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "size",
+									"value": "3",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Действия со складами",
+			"description": "",
+			"item": [
+				{
+					"name": "Список складов",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Создать новый склад",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "address",
+									"value": "Николая Островского 109",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "50",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить информацию о складе",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/3/",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "capacity",
+									"value": "20",
+									"description": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить склад",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/2/",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "capacity",
+									"value": "20",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "dsgsdgdsg",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Запрос товаров на склад",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/3/request",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "items",
+									"value": "{ \"9\":4 }",
+									"description": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Текущее состояние склада",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/1/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "items",
+									"value": "{ 1:3, 2:3}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Отправка товаров со склада на склад",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/1/transfer",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "items",
+									"value": "{\"2\": 5 }",
+									"description": ""
+								},
+								{
+									"key": "destination",
+									"value": "2",
+									"description": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Отправка товаров со склада",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/2/export",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "items",
+									"value": "{\"2\": 2 }",
+									"description": ""
+								},
+								{
+									"key": "destination",
+									"value": "2",
+									"description": ""
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "История перемещений с участием склада",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/2/history/movement",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "items",
+									"value": "{\"2\": 2 }",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "destination",
+									"value": "2",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Состояние склада на определенную дату",
+					"request": {
+						"url": "http://192.168.100.123:8080/managementsystem/warehouses/3/history/state",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "date",
+									"value": "2018-09-23 15:16:14",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Выход из аккаунта",
+			"request": {
+				"url": "http://192.168.100.123:8080/logout",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

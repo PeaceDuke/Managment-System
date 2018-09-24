@@ -133,6 +133,11 @@ class ItemService
 
     public function getItemInWarehousesOnDate($itemId, $date)
     {
+        try {
+            $date = new \DateTime($date);
+        } catch (\Exception $exception) {
+            throw new \Exception('400 Bad Request При конвертации даты произошла ошибка: ' . $exception->getMessage(), 400);
+        }
         $item = $this->itemRepository->getItem($itemId);
         if (isset($item)) {
             $transactions = array_reverse($this->transactionRepository->getItemMovement($itemId, $date));

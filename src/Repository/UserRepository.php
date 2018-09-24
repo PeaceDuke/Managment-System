@@ -41,7 +41,7 @@ class UserRepository
         return $user;
     }
 
-    public function updateUser($user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
+    public function updateUser(User $user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
     {
         $query = $this->db->prepare('UPDATE User SET Company = ?, FirstName = ?, SecondName = ?, `E-mail` = ?,
              Password = ?, Salt = ?, PhoneNumber = ?, Permission = ? WHERE id = ?');
@@ -55,7 +55,7 @@ class UserRepository
         $phonenumber = (!isset($phonenumber) ? $user->getPhonenumber() : $phonenumber);
         $perms = (!isset($perms) ? $user->getPerms() : $perms);
         try {
-            $query->execute([$company, $firstname, $secondname, $password, $salt, $phonenumber, $perms, $user->getId()]);
+            $query->execute([$company, $firstname, $secondname, $email, $password, $salt, $phonenumber, $perms, $user->getId()]);
         } catch (\PDOException $exception) {
             throw new \Exception('400 Bad request Ошибка при добавлении в базу данных: ' . $exception->getMessage(), 400);
         }
@@ -70,17 +70,14 @@ class UserRepository
         foreach ($res as $warehouse) {
             $query = $this->db->prepare('DELETE FROM StoredItems WHERE Warehouse_id = ?;
                 DELETE FROM Transaction WHERE Whin_id = ? OR Whout_id = ?;');
-            $query->execute($warehouse['id'], $warehouse['id'], $warehouse['id']);
+            $query->execute([$warehouse['id'], $warehouse['id'], $warehouse['id']]);
         }
         $query = $this->db->prepare('DELETE FROM Item WHERE Owner_id = ?;
             DELETE FROM User WHERE id = ?;');
         $query->execute([$userId]);
     }
 
-    /**
-     * @param $id
-     * @return User
-     */
+
     public function getUser($userId)
     {
         $query = $this->db->prepare('SELECT * FROM User WHERE id = ?');

@@ -24,9 +24,12 @@ class Warehouse
     {
         $this->id = $id;
         $this->address = $address;
-        $this->itemPacks = [];
+        $this->itemPacks = $itemsPacks;
         $this->capacity = $capacity;
         $this->remainingSpace = $capacity;
+        foreach ($itemsPacks as $itemsPack) {
+            $this->remainingSpace -= $itemsPack->getSize() * $itemsPack->getQuantity();
+        }
     }
 
     /**

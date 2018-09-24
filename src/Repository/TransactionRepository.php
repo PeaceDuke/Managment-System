@@ -33,11 +33,11 @@ class TransactionRepository
         $id = $query->fetch();
         $id = $id['MAX(id)'];
         $id++;
-        foreach ($items as $itemId => $quantity) {
+        foreach ($items as $itemPack) {
             $query = $this->db->prepare('INSERT INTO Transaction (id, Item_id, Whin_id, Whout_id, Quantity, Date) 
                 VALUES(?, ?, ?, ?, ?, ?)');
             $time = new \DateTime();
-            $query->execute([$id, $itemId, $warehouseIn, $warehouseOut, $quantity, $time->format('Y-m-d H:i:s')]);
+            $query->execute([$id, $itemPack->getId(), $warehouseIn, $warehouseOut, $itemPack->getQuantity(), $time->format('Y-m-d H:i:s')]);
         }
     }
 

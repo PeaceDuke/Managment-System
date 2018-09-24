@@ -31,6 +31,7 @@ class WarehouseController
     {
         $bodyParams = $request->getParsedBody();
         $warehouse = $this->warehouseService->addNewWarehouse($bodyParams['address'], $bodyParams['capacity']);
+        $response->withStatus(201);
         return $response->getBody()->write("Создан склад\nid: " . $warehouse->getId() . "\nAddress: "
             . $warehouse->getAddress() . "\nCapacity: " . $warehouse->getCapacity());
     }
@@ -114,7 +115,7 @@ class WarehouseController
         $id = $args['id'];
         $bodyParams = $request->getParsedBody();
         $items = json_decode($bodyParams['items']);
-        $out = $this->warehouseService->requestItemsToWarehouse($id, $items);
+        $out = $this->warehouseService->exportItemsFromWarehouse($id, $items);
         return $response->getBody()->write($out);
     }
 
@@ -122,20 +123,14 @@ class WarehouseController
     {
         $id = $args['id'];
         $out = $this->warehouseService->getMovementOnWarehouse($id);
-        return $out;
+        return $response->getBody()->write($out);
     }
-
 
     public function getWarehouseStateOnDate(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $bodyParams = $request->getParsedBody();
-        try {
-            $date = new \DateTime($bodyParams['date']);
-        } catch (\Exception $exception) {
-            throw new \Exception('При конвертации даты произошла ошибка: ' . $exception->getMessage(), 400);
-        }
-        $out = $this->warehouseService->getWarehouseStateOnDate($id, $date);
+        $out = $this->warehouseService->getWarehouseStateOnDate($id, $bodyParams['date']);
         return $response->getBody()->write($out);
     }
 }

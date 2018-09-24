@@ -28,6 +28,7 @@ class ItemController
     {
         $bodyParams = $request->getParsedBody();
         $item = $this->itemService->addNewItem($bodyParams['name'], $bodyParams['type'], $bodyParams['price'], $bodyParams['size']);
+        $response->withStatus(201);
         return $response->getBody()->write("Товар добавлен\n" . $item->getFullInfo());
     }
 
@@ -57,30 +58,29 @@ class ItemController
     public function getItemsList(Request $request, Response $response, $args)
     {
         $items = $this->itemService->getAllItem();
-        $output = "Список всех товаров\n";
-        foreach ($items as $item) {
-            $output = $output . "Id: " . $item->getId() . " Name: " . $item->getName() . "\n";
+        if(isset($items)) {
+            $output = "Список всех товаров\n";
+            foreach ($items as $item) {
+                $output = $output . "Id: " . $item->getId() . " Name: " . $item->getName() . "\n";
+            }
+            return $response->getBody()->write($output);
+        } else {
+            return $response->getBody()->write('У вас нет зарегестрированных товаров');
         }
-        return $response->getBody()->write($output);
     }
 
     public function getItemMovement(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $out = $this->itemService->getItemMovement($id);
-        return $out;
+        return $response->getBody()->write($out);
     }
 
     public function getItemInWarehousesOnDate(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        try {
-            $bodyParams = $request->getParsedBody();
-            $date = new \DateTime($bodyParams['date']);
-        } catch (\Exception $exception) {
-            throw new \Exception('При конвертации даты произошла ошибка: ' . $exception->getMessage(), 400);
-        }
-        $out = $this->itemService->getItemInWarehousesOnDate($id, $date);
+        $bodyParams = $request->getParsedBody();
+        $out = $this->itemService->getItemInWarehousesOnDate($id, $bodyParams['date']);
         return $response->getBody()->write($out);
     }
 

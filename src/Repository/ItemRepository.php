@@ -40,7 +40,7 @@ class ItemRepository
         return $item;
     }
 
-    public function updateItem($item, $name, $type, $price, $size)
+    public function updateItem(Item $item, $name, $type, $price, $size)
     {
         $query = $this->db->prepare('UPDATE Item SET Name = ?, Type = ?, Price = ?, Size = ? WHERE id = ?');
         var_dump($name);

@@ -29,6 +29,7 @@ class UserController
         $bodyParams = $request->getParsedBody();
         $user = $this->userService->addNewUser($bodyParams['firstname'], $bodyParams['secondname'], $bodyParams['email'],
             $bodyParams['password'], $bodyParams['phonenumber'], $bodyParams['company'], $bodyParams['perms']);
+        $response->withStatus(201);
         return $response->getBody()->write("Создан новый пользователь\n" . $user->getFullInfo());
 
     }
@@ -48,7 +49,7 @@ class UserController
                 $phonenumber = $bodyParams['phonenumber'];
                 $company = $bodyParams['company'];
                 $perms = $bodyParams['perms'];
-                $user = $this->userService->updateUser($user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms);
+                $user = $this->userService->updateUser($id, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms);
                 return $response->getBody()->write("Данные пользователя обновлены\n" . $user->getFullInfo());
             } else {
                 return $response->getBody()->write("Данный пользователь не существует");

@@ -23,9 +23,9 @@ class WarehouseRepository
     {
         $query = $this->db->prepare('INSERT INTO Warehouse (Owner_id, Address, Capacity) VALUES (?, ?, ?)');
         try {
-            $query->execute([$_SESSION['userId'], $capacity, $address]);
+            $query->execute([$_SESSION['userId'], $address, $capacity]);
         } catch (\PDOException $exception) {
-            throw new \Exception('400 Bad request Ошибка при добавлении в базу данных: ' . $exception->getMessage(), 400);
+            throw new \Exception('400 Bad Request Ошибка при добавлении в базу данных: ' . $exception->getMessage(), 400);
         }
         $query = $this->db->prepare('SELECT LAST_INSERT_ID()');
         $query->execute();
@@ -36,7 +36,7 @@ class WarehouseRepository
 
     public function updateWarehouse($warehouseId, $address, $capacity)
     {
-        $warehouse = $this->getWarehouseInfo($warehouseId);
+        $warehouse = $this->getWarehouse($warehouseId);
         $query = $this->db->prepare('UPDATE Warehouse SET Address = ?, Capacity = ? WHERE id = ?');
         $address = !isset($address) ? $warehouse->getAddress() : $address;
         $capacity = !isset($capacity) ? $warehouse->getCapacity() : $capacity;
