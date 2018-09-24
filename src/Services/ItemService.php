@@ -38,10 +38,9 @@ class ItemService
 
     public function updateItem($itemId, $name, $type, $price, $size)
     {
-        var_dump($name);
         $item = $this->getItem($itemId);
         if (isset($item)) {
-            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime());
+            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime('2000-01-01'));
             if(!isset($transactions)) {
                 return $this->itemRepository->updateItem($item, $name, $type, $price, $size);
             } else {
@@ -56,7 +55,7 @@ class ItemService
     {
         $item = $this->itemRepository->getItem($itemId);
         if(!is_null($item)) {
-            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime());
+            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime('2000-01-01'));
             if(!isset($transactions)) {
                 $this->itemRepository->deleteItem($itemId);
                 return $item->getName();
@@ -91,11 +90,10 @@ class ItemService
             if (isset($warehouses) && sizeof($warehouses) != 0) {
                 $output = "Товар: " . $item->getName() . " есть на складах:\n";
                 $sum = 0;
-                var_dump($warehouses);
                 foreach ($warehouses as $warehouse) {
                     $pack = $warehouse->getItemPack($itemId);
                     $output = $output . $warehouse->getAddress() . ": " . $pack->getQuantity() . "\n";
-                    $sum += $pack->getPackPrice();
+                    $sum += $pack->calcPackPrice();
                 }
                 $output = $output . "Общая стоимиость: " . $sum . " У.е";
                 return $output;
@@ -119,7 +117,7 @@ class ItemService
                     $in = $this->warehouseRepository->getWarehouseInfo($transaction->getWarehouseIn());
                     $output = $output . "Из склада по адресу: " . (isset($out) ? $out->getAddress() : '*Адрес поставщика*')
                         . " в склад по адрессу: " . (isset($in) ? $in->getAddress() : '*Адрес приемщика*')
-                        . " отправленно " . $this->itemService->getItem($transaction->getItem())->getName()
+                        . " отправленно " . $this->itemRepository->getItem($transaction->getItem())->getName()
                         . " в колличестве " . $transaction->getQuantity() . " ед. Запись от " . $transaction->getDate()->format("Y-m-d H:i:s") . "\n";
                 }
                 return $output;
@@ -133,6 +131,9 @@ class ItemService
 
     public function getItemInWarehousesOnDate($itemId, $date)
     {
+        if(is_null($date)){
+            throw new \Exception('400 Bad Request Не введена дата', 400);
+        }
         try {
             $date = new \DateTime($date);
         } catch (\Exception $exception) {

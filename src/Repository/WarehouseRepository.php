@@ -134,7 +134,7 @@ class WarehouseRepository
         $query = $this->db->prepare('SELECT Warehouse_id, Item_id, Name, Type, Price, Size, Address, Capacity, Quantity FROM StoredItems 
             INNER JOIN Warehouse ON StoredItems.Warehouse_id = Warehouse.id 
             INNER JOIN Item ON StoredItems.Item_id = Item.id
-            WHERE Item_id = 1;');
+            WHERE Item_id = ?;');
         $query->execute([$itemId]);
         $res = $query->fetchAll(\PDO::FETCH_ASSOC);
         if(isset($res[0])){
@@ -142,7 +142,7 @@ class WarehouseRepository
             foreach ($res as $warehouse)
             {
                 $warehouses[$warehouse['Warehouse_id']] = new Warehouse($warehouse['Warehouse_id'], $warehouse['Address'],
-                    [new ItemPack(new Item($warehouse['Item_id'], $warehouse['Name'], $warehouse['Type'],
+                    [$warehouse['Item_id'] => new ItemPack(new Item($warehouse['Item_id'], $warehouse['Name'], $warehouse['Type'],
                         $warehouse['Price'], $warehouse['Size']), $warehouse['Quantity'])], $warehouse['Capacity']);
             }
             return $warehouses;

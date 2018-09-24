@@ -20,7 +20,7 @@ $app->group('/managementsystem',function () use ($app) {
                     echo "movement | state для дальнейшей работы";
                 });
                 $app->get('/movement', 'WarehouseController:getMovementOnWarehouse'); //получить движения связанные со складом
-                $app->post('/state', 'WarehouseController:getWarehouseStateOnDate'); //получить состояние склада на дату
+                $app->get('/state', 'WarehouseController:getWarehouseStateOnDate'); //получить состояние склада на дату
             });
         });
     });
@@ -37,7 +37,7 @@ $app->group('/managementsystem',function () use ($app) {
                     echo "movement | state для дальнейшей работы";
                 });
                 $app->get('/movement', 'ItemController:getItemMovement'); //получить движения связанные со товаром
-                $app->post('/state', 'ItemController:getItemInWarehousesOnDate'); //получить состояние товара на складах на дату
+                $app->get('/state', 'ItemController:getItemInWarehousesOnDate'); //получить состояние товара на складах на дату
             });
         });
     });

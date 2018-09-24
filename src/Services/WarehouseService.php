@@ -50,7 +50,7 @@ class WarehouseService
     {
         $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
         if (isset($warehouse)) {
-            $transactions = $this->transactionRepository->getMovementOnWarehouse($warehouseId, new \DateTime());
+            $transactions = $this->transactionRepository->getMovementOnWarehouse($warehouseId, new \DateTime('2000-01-01'));
             if (!isset($transactions)) {
                 $this->warehouseRepository->deleteWarehouse($warehouseId);
                 return $warehouse->getAddress();
@@ -217,6 +217,9 @@ class WarehouseService
 
     public function getWarehouseStateOnDate($warehouseId, $date)
     {
+        if(is_null($date)){
+            throw new \Exception('400 Bad Request Не введена дата', 400);
+        }
         try {
             $date = new \DateTime($date);
         } catch (\Exception $exception) {
