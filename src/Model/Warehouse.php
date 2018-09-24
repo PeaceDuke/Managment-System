@@ -69,11 +69,6 @@ class Warehouse
         return $this->itemPacks[$id];
     }
 
-    public function checkItemPack($id)
-    {
-        return isset($this->itemPacks[$id]);
-    }
-
     public function getRemainingSpace()
     {
         return $this->remainingSpace;

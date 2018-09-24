@@ -79,8 +79,7 @@ class ItemController
     public function getItemInWarehousesOnDate(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $bodyParams = $request->getParsedBody();
-        $out = $this->itemService->getItemInWarehousesOnDate($id, $bodyParams['date']);
+        $out = $this->itemService->getItemInWarehousesOnDate($id, $request->getParam('date'));
         return $response->getBody()->write($out);
     }
 

@@ -55,6 +55,7 @@ class UserService
             $user = $this->userRepository->getUser($userId);
             if(!is_null($user)) {
                 $this->userRepository->deleteUser($userId);
+                return $user;
             } else {
                 throw new \Exception("404 Not Found Данного пользователя не существует", 404);
             }
@@ -66,7 +67,12 @@ class UserService
     public function getUser($userId)
     {
         if ($_SESSION['userType'] == 'Admin' || $_SESSION['userId'] == $userId) {
-            return $this->userRepository->getUser($userId);
+            $user = $this->userRepository->getUser($userId);
+            if(!is_null($user)) {
+                return $user;
+            } else {
+                throw new \Exception("404 Not Found Данного пользователя не существует", 404);
+            }
         } else {
             throw new \Exception('403 Forbidden Доступно только администратору', 403);
         }

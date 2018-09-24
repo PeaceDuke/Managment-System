@@ -129,8 +129,7 @@ class WarehouseController
     public function getWarehouseStateOnDate(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $bodyParams = $request->getParsedBody();
-        $out = $this->warehouseService->getWarehouseStateOnDate($id, $bodyParams['date']);
+        $out = $this->warehouseService->getWarehouseStateOnDate($id, $request->getParam('date'));
         return $response->getBody()->write($out);
     }
 }

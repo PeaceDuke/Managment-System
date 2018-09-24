@@ -4,22 +4,22 @@
 -- MySQL Workbench Forward Engineering
 
 -- -----------------------------------------------------
--- Schema WarehouseManagement
+-- Schema WarehouseManagementTest
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `WarehouseManagement` ;
+DROP SCHEMA IF EXISTS `WarehouseManagementTest` ;
 
 -- -----------------------------------------------------
--- Schema WarehouseManagement
+-- Schema WarehouseManagementTest
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `WarehouseManagement` DEFAULT CHARACTER SET utf8 ;
-USE `WarehouseManagement` ;
+CREATE SCHEMA IF NOT EXISTS `WarehouseManagementTest` DEFAULT CHARACTER SET utf8 ;
+USE `WarehouseManagementTest` ;
 
 -- -----------------------------------------------------
--- Table `WarehouseManagement`.`User`
+-- Table `WarehouseManagementTest`.`User`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WarehouseManagement`.`User` ;
+DROP TABLE IF EXISTS `WarehouseManagementTest`.`User` ;
 
-CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`User` (
+CREATE TABLE IF NOT EXISTS `WarehouseManagementTest`.`User` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Company` VARCHAR(45) NOT NULL,
   `FirstName` VARCHAR(45) NOT NULL,
@@ -34,13 +34,13 @@ CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`User` (
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB CHARSET=utf8;
 
-
+INSERT INTO `WarehouseManagementTest`.`User` VALUES('Co', 'Admin', 'Root', 'admin@root.com', 'fff2b4cb565669376cf14c11154c9821b5a8855c', 'dc76e9f0c0006e8f919e0c515c66dbba3982f785', '88005553535', 'Admin');
 -- -----------------------------------------------------
--- Table `WarehouseManagement`.`Warehouse`
+-- Table `WarehouseManagementTest`.`Warehouse`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WarehouseManagement`.`Warehouse` ;
+DROP TABLE IF EXISTS `WarehouseManagementTest`.`Warehouse` ;
 
-CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Warehouse` (
+CREATE TABLE IF NOT EXISTS `WarehouseManagementTest`.`Warehouse` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Owner_id` INT NOT NULL,
   `Address` VARCHAR(45) NOT NULL,
@@ -50,18 +50,18 @@ CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Warehouse` (
   INDEX `fk_Warehouse_User1_idx` (`Owner_id` ASC) ,
   CONSTRAINT `fk_Warehouse_User1`
     FOREIGN KEY (`Owner_id`)
-    REFERENCES `WarehouseManagement`.`User` (`id`)
+    REFERENCES `WarehouseManagementTest`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARSET=utf8;
 
 
 -- -----------------------------------------------------
--- Table `WarehouseManagement`.`Item`
+-- Table `WarehouseManagementTest`.`Item`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WarehouseManagement`.`Item` ;
+DROP TABLE IF EXISTS `WarehouseManagementTest`.`Item` ;
 
-CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Item` (
+CREATE TABLE IF NOT EXISTS `WarehouseManagementTest`.`Item` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Owner_id` INT NOT NULL,
   `Name` VARCHAR(45) NOT NULL,
@@ -72,18 +72,18 @@ CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Item` (
   INDEX `fk_Item_User1_idx` (`Owner_id` ASC) ,
   CONSTRAINT `fk_Item_User1`
     FOREIGN KEY (`Owner_id`)
-    REFERENCES `WarehouseManagement`.`User` (`id`)
+    REFERENCES `WarehouseManagementTest`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARSET=utf8;
 
 
 -- -----------------------------------------------------
--- Table `WarehouseManagement`.`Transaction`
+-- Table `WarehouseManagementTest`.`Transaction`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WarehouseManagement`.`Transaction` ;
+DROP TABLE IF EXISTS `WarehouseManagementTest`.`Transaction` ;
 
-CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Transaction` (
+CREATE TABLE IF NOT EXISTS `WarehouseManagementTest`.`Transaction` (
   `id` INT NOT NULL,
   `Item_id` INT NOT NULL,
   `Whin_id` INT NULL,
@@ -96,28 +96,28 @@ CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`Transaction` (
   INDEX `fk_Move_Item1_idx` (`Item_id` ASC) ,
   CONSTRAINT `fk_Move_Warehouse`
     FOREIGN KEY (`Whin_id`)
-    REFERENCES `WarehouseManagement`.`Warehouse` (`id`)
+    REFERENCES `WarehouseManagementTest`.`Warehouse` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Move_Warehouse1`
     FOREIGN KEY (`Whout_id`)
-    REFERENCES `WarehouseManagement`.`Warehouse` (`id`)
+    REFERENCES `WarehouseManagementTest`.`Warehouse` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Move_Item1`
     FOREIGN KEY (`Item_id`)
-    REFERENCES `WarehouseManagement`.`Item` (`id`)
+    REFERENCES `WarehouseManagementTest`.`Item` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARSET=utf8;
 
 
 -- -----------------------------------------------------
--- Table `WarehouseManagement`.`StoredItems`
+-- Table `WarehouseManagementTest`.`StoredItems`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `WarehouseManagement`.`StoredItems` ;
+DROP TABLE IF EXISTS `WarehouseManagementTest`.`StoredItems` ;
 
-CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`StoredItems` (
+CREATE TABLE IF NOT EXISTS `WarehouseManagementTest`.`StoredItems` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `Warehouse_id` INT NOT NULL,
   `Item_id` INT NOT NULL,
@@ -127,12 +127,12 @@ CREATE TABLE IF NOT EXISTS `WarehouseManagement`.`StoredItems` (
   INDEX `fk_StoredItems_Item1_idx` (`Item_id` ASC) ,
   CONSTRAINT `fk_StoredItems_Warehouse1`
     FOREIGN KEY (`Warehouse_id`)
-    REFERENCES `WarehouseManagement`.`Warehouse` (`id`)
+    REFERENCES `WarehouseManagementTest`.`Warehouse` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_StoredItems_Item1`
     FOREIGN KEY (`Item_id`)
-    REFERENCES `WarehouseManagement`.`Item` (`id`)
+    REFERENCES `WarehouseManagementTest`.`Item` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARSET=utf8;
