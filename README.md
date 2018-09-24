@@ -17,142 +17,142 @@
 
 Доступно только пользователям со статусом "Admin".
 Получение списка происходит через GET запрос.
-> Запрос: GET/managementsystem/users/
 В виде ответа приходит строка с данными всех пользоваетлей.
+> Запрос: GET/managementsystem/users/
 
 ### Добавление пользователей
 
 Доступно только пользователям со статусом "Admin".
 Создание происходит через POST запрос, с обязательным указанием имени и фамилии, почты, пароля и т.д
-> Запрос: POST/managementsystem/users/<
 В виде ответа приходит строка с данными добавленного пользователя.
+> Запрос: POST/managementsystem/users/
 
 ### Посмотреть информацию о пользователе
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/users/{userId}<
 В виде ответа приходит строка с данными пользоваетля.
+> Запрос: GET/managementsystem/users/{userId}
 
 ### Обновление пользователей
 
 Обновлеине происходит через PUT запрос, с указанием полей которые необходимо изменить (не обязательно все).
-> Запрос: PUT/managementsystem/users/{userId}<
 В виде ответа приходит строка с новыми данными пользователя.
+> Запрос: PUT/managementsystem/users/{userId}
 
 ### Удаление пользователя
 
 Удаление происходит через DELETE запрос.
-> Запрос: DELETE/managementsystem/users/{userId}<
 В виде ответа приходит сообщение о удалении пользователя с именем и фамилией.
+> Запрос: DELETE/managementsystem/users/{userId}
 
 ## Управление товарами
 
 ### Посмотреть список всех товаров пользователя
 
 Получение списка происходит через GET запрос.
-> Запрос: GET/managementsystem/items/<
 В виде ответа приходит строка со списком всех товаров пользоваетля.
+> Запрос: GET/managementsystem/items/
 
 ### Добавление товара
 
 Создание происходит через POST запрос, с обязательным указанием названия, типа товара, цены и размера.
-> Запрос: POST/managementsystem/items/<
 В виде ответа приходит строка с данными добавленного товара.
+> Запрос: POST/managementsystem/items/
 
 ### Посмотреть информацию о товаре
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/items/{itemId}<
 В виде ответа приходит строка с данными товара.
+> Запрос: GET/managementsystem/items/{itemId}
 
 ### Обновление товара
 
 Обновлеине происходит через PUT запрос, с указанием полей которые необходимо изменить (не обязательно все).
-> Запрос: PUT/managementsystem/items/{itemId}<
 В виде ответа приходит строка с данными товара.
+> Запрос: PUT/managementsystem/items/{itemId}
 
 ### Удаление товара
 
 Удаление происходит через DELETE запрос.
-> Запрос: DELETE/managementsystem/items/{itemId}<
 В виде ответа приходит сообщение о удалении товара с названием.
+> Запрос: DELETE/managementsystem/items/{itemId}
 
 ### Поиск товара на складах
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/items/{itemId}/find<
 В виде ответа приходит список складов, на которых найден этот товар, а так же его колиичество и общая стоимость.
+> Запрос: GET/managementsystem/items/{itemId}/find
 
 ### Посмотреть информацию о всех перемещениях товара
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/items/{itemId}/history/movement<
 В виде ответа приходит список всех перемещений товара между склазами.
+> Запрос: GET/managementsystem/items/{itemId}/history/movement
 
 ### Посмотреть информацию о колличестве товара на складах на определенную дату
 
 Получение информации происходит через GET запрос с параметром, в котором записана дата.
-> Запрос: GET/managementsystem/items/{itemId}/history/state?date={YYYY-MM-DD hh:mm:ss}<
 В виде ответа приходит список складов, на которых был товар на ту дату, а так же его колиичество и общая стоимость.
+> Запрос: GET/managementsystem/items/{itemId}/history/state?date={YYYY-MM-DD hh:mm:ss}
 
 ## Управление складами
 
 ### Посмотреть список всех складов пользователя
 
 Получение списка происходит через GET запрос.
-> Запрос: GET/managementsystem/warehouses/<
 В виде ответа приходит строка со списком всех складов пользоваетля.
+> Запрос: GET/managementsystem/warehouses/
 
 ### Добавление склада
 
 Создание происходит через POST запрос, с обязательным указанием адреса, и размера.
-> Запрос: POST/managementsystem/warehouses/<
 В виде ответа приходит строка с данными добавленного склада.
+> Запрос: POST/managementsystem/warehouses/
 
 ### Посмотреть информацию о складе
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/warehouses/{warehouseId}<
 В виде ответа приходит строка с данными склада, а так же всеми товарами на нем.
+> Запрос: GET/managementsystem/warehouses/{warehouseId}
 
 ### Обновление товара
 
 Обновлеине происходит через PUT запрос, с указанием полей которые необходимо изменить (не обязательно все).
-> Запрос: PUT/managementsystem/warehouses/{warehouseId}<
 В виде ответа приходит строка с новыми данными склада.
+> Запрос: PUT/managementsystem/warehouses/{warehouseId}
 
 ### Удаление товара
 
 Удаление происходит через DELETE запрос.
-> Запрос: DELETE/managementsystem/warehouses/{warehouseId}<
 В виде ответа приходит сообщение о удалении склада с адресом.
+> Запрос: DELETE/managementsystem/warehouses/{warehouseId}
 
 ### Запрос товара на склад
 
 Удаление происходит через PUT запрос.
-> Запрос: PUT/managementsystem/warehouses/{warehouseId}/request<
 В виде ответа приходит сообщение о том сколько товара было запрошено.
+> Запрос: PUT/managementsystem/warehouses/{warehouseId}/request
 
 ### Экспорт товара
 
 Удаление происходит через PUT запрос.
-> Запрос: PUT/managementsystem/warehouses/{warehouseId}/export<
 В виде ответа приходит сообщение о том сколько товара было отправлено.
+> Запрос: PUT/managementsystem/warehouses/{warehouseId}/export
 
 ### Перемещение товара
 
 Удаление происходит через PUT запрос.
-> Запрос: PUT/managementsystem/warehouses/{warehouseId}/transfer<
 В виде ответа приходит сообщение о том сколько товара было перемещено.
+> Запрос: PUT/managementsystem/warehouses/{warehouseId}/transfer
 
 ### Посмотреть информацию о всех связанных со складом перемещениях
 
 Получение информации происходит через GET запрос.
-> Запрос: GET/managementsystem/warehouses/{warehouseId}/history/movement<
 В виде ответа приходит список всех перемещений товара между склазами.
+> Запрос: GET/managementsystem/warehouses/{warehouseId}/history/movement
 
 ### Посмотреть информацию о состоянии склада на определенную дату
 
 Получение информации происходит через GET запрос с параметром, в котором записана дата.
-> Запрос: GET/managementsystem/warehouses/{warehouseId}/history/state?date={YYYY-MM-DD hh:mm:ss}<
 В виде ответа приходит строка с данными склада, а так же всеми товарами на нем на указанную дату.
+> Запрос: GET/managementsystem/warehouses/{warehouseId}/history/state?date={YYYY-MM-DD hh:mm:ss}
