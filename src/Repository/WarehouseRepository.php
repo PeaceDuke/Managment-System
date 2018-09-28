@@ -149,4 +149,14 @@ class WarehouseRepository
         }
         return null;
     }
+
+    public function checkWarehouse($id, $address)
+    {
+        $query = $this->db->prepare('SELECT * FROM Warehouse WHERE `Address` = ? AND id <> ?');
+        $query->execute([$address, $id]);
+        $res = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if (isset($res[0])) {
+            throw new \Exception('400 Bad Request Склад с таким адресом уже существует', 400);
+        }
+    }
 }

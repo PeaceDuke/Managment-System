@@ -69,8 +69,9 @@ class UserRepository
         $res = $query->fetchAll();
         foreach ($res as $warehouse) {
             $query = $this->db->prepare('DELETE FROM StoredItems WHERE Warehouse_id = ?;
-                DELETE FROM Transaction WHERE Whin_id = ? OR Whout_id = ?;');
-            $query->execute([$warehouse['id'], $warehouse['id'], $warehouse['id']]);
+                DELETE FROM Transaction WHERE Whin_id = ? OR Whout_id = ?
+                DELETE FROM Warehouse WHERE id = ?;');
+            $query->execute([$warehouse['id'], $warehouse['id'], $warehouse['id'], $warehouse['id']]);
         }
         $query = $this->db->prepare('DELETE FROM Item WHERE Owner_id = ?;
             DELETE FROM User WHERE id = ?;');
@@ -100,5 +101,18 @@ class UserRepository
             $userList[$user['id']] = new User($user['id'], $user['FirstName'], $user['SecondName'], $user['E-mail'], $user['PhoneNumber'], $user['Company'], $user['Permission'], $res['Password'], $res['Salt']);
         }
         return $userList;
+    }
+
+    public function checkUser($id, $mail, $company, $fname, $sname)
+    {
+        $query = $this->db->prepare('SELECT * FROM User WHERE (`E-mail` = ? OR (Company = ? AND FirstName = ? AND SecondName = ?)) AND id <> ?');
+        $query->execute([$mail, $company, $fname, $sname, $id]);
+        $res = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if (isset($res[0])) {
+            $res = $res[0];
+            if ($res['E-mail'] == $mail)
+                throw new \Exception('400 Bad Request Пользователь с такой почтой уже существует', 400);
+            throw new \Exception('400 Bad Request Пользователь с таким именем уже существует', 400);
+        }
     }
 }

@@ -25,6 +25,7 @@ class WarehouseService
     public function addNewWarehouse($address, $capacity)
     {
         if (isset($address) && isset($capacity)) {
+            $this->warehouseRepository->checkWarehouse(0, $address);
             return $this->warehouseRepository->addNewWarehouse($address, $capacity);
         } else {
             throw new \Exception("400 Bad Request Указаны не все параметры!", 400);
@@ -33,6 +34,7 @@ class WarehouseService
 
     public function updateWarehouse($warehouseId, $address, $capacity)
     {
+        $this->warehouseRepository->checkWarehouse($warehouseId, $address);
         $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
         if (isset($warehouse)) {
             if ($warehouse->getRemainingSpace() >= $warehouse->getCapacity() - $capacity) {

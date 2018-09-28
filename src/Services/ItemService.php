@@ -30,6 +30,7 @@ class ItemService
     public function addNewItem($name, $type, $price, $size)
     {
         if(isset($name) && isset($type) && isset($price) && isset($size)) {
+            $this->itemRepository->checkItem(0, $name, $type);
             return $this->itemRepository->addNewItem($name, $type, $price, $size);
         } else {
             throw new \Exception("400 Bad Request Указаны не все данные", 400);
@@ -38,9 +39,12 @@ class ItemService
 
     public function updateItem($itemId, $name, $type, $price, $size)
     {
+        $this->itemRepository->checkItem($itemId, $name, $type);
         $item = $this->getItem($itemId);
         if (isset($item)) {
-            $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime('2000-01-01'));
+            if($item->getSize() != $size()) {
+                $transactions = $this->transactionRepository->getItemMovement($itemId, new \DateTime('2000-01-01'));
+            }
             if(!isset($transactions)) {
                 return $this->itemRepository->updateItem($item, $name, $type, $price, $size);
             } else {

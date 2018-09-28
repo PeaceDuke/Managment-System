@@ -25,6 +25,7 @@ class UserService
         if ($_SESSION['userType'] == 'Admin') {
             if (isset($firstname) && isset($secondname) && isset($email) && isset($password) &&
                 isset($phonenumber) && isset($company) && isset($perms)) {
+                $this->userRepository->checkUser(0, $email, $company, $firstname, $secondname);
                 return $this->userRepository->addNewUser($firstname, $secondname, $email, $password,
                     $phonenumber, $company, $perms);
             } else {
@@ -38,6 +39,7 @@ class UserService
     public function updateUser($userId, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms)
     {
         if ($_SESSION['userType'] == 'Admin' || $_SESSION['userId'] == $userId) {
+            $this->userRepository->checkUser($userId, $email, $company, $firstname, $secondname);
             $user = $this->userRepository->getUser($userId);
             if(!is_null($user)) {
                 return $this->userRepository->updateUser($user, $firstname, $secondname, $email, $password, $phonenumber, $company, $perms);

@@ -82,7 +82,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -140,7 +140,7 @@
 				{
 					"name": "Обновление информации о пользователе (только администратор)",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/users/",
+						"url": "http://192.168.100.123:8080/managementsystem/users/2",
 						"method": "PUT",
 						"header": [
 							{
@@ -275,7 +275,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -354,12 +354,12 @@
 				{
 					"name": "Информация о товаре",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/items/2/",
+						"url": "http://192.168.100.123:8080/managementsystem/items/10/",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -398,12 +398,12 @@
 				{
 					"name": "Поиск товара по всем складам",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/items/1/find",
+						"url": "http://192.168.100.123:8080/managementsystem/items/10/find",
 						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -442,12 +442,38 @@
 				{
 					"name": "Информация о товаре на складах на определенню дату",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/items/1/history/state",
-						"method": "POST",
+						"url": {
+							"raw": "http://192.168.100.123:8080/managementsystem/items/1/history/state?date=2018-09-23 15:16:14",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"123"
+							],
+							"port": "8080",
+							"path": [
+								"managementsystem",
+								"items",
+								"1",
+								"history",
+								"state"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2018-09-23 15:16:14",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -474,7 +500,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -545,26 +571,16 @@
 				{
 					"name": "Удалить товар товар",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/items/3/",
+						"url": "http://192.168.100.123:8080/managementsystem/items/11/",
 						"method": "DELETE",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "size",
-									"value": "3",
-									"description": "",
-									"type": "text"
-								}
-							]
-						},
+						"body": {},
 						"description": ""
 					},
 					"response": []
@@ -583,7 +599,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Basic YWRtaW5Acm9vdC5jb206cm9vdA==",
+								"value": "Basic bmFtZUB1c2VyLmNvbTpwYXNz",
 								"description": ""
 							}
 						],
@@ -855,8 +871,34 @@
 				{
 					"name": "Состояние склада на определенную дату",
 					"request": {
-						"url": "http://192.168.100.123:8080/managementsystem/warehouses/3/history/state",
-						"method": "POST",
+						"url": {
+							"raw": "http://192.168.100.123:8080/managementsystem/warehouses/3/history/state?date=2018-09-23 15:16:14",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"123"
+							],
+							"port": "8080",
+							"path": [
+								"managementsystem",
+								"warehouses",
+								"3",
+								"history",
+								"state"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2018-09-23 15:16:14",
+									"equals": true,
+									"description": ""
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
 						"header": [
 							{
 								"key": "Authorization",

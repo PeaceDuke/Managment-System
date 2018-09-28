@@ -88,4 +88,14 @@ class ItemRepository
         }
         return null;
     }
+
+    public function checkItem($id, $name, $type)
+    {
+        $query = $this->db->prepare('SELECT * FROM Item WHERE Owner_id = ? AND (Name = ? AND Type = ?) AND id <> ?');
+        $query->execute([$_SESSION['userId'], $name, $type, $id]);
+        $res = $query->fetchAll(\PDO::FETCH_ASSOC);
+        if (isset($res[0])) {
+            throw new \Exception('400 Bad Request Такой товар уже существует', 400);
+        }
+    }
 }
