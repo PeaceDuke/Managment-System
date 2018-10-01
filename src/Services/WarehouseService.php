@@ -25,6 +25,9 @@ class WarehouseService
     public function addNewWarehouse($address, $capacity)
     {
         if (isset($address) && isset($capacity)) {
+            if($capacity <= 0){
+                throw new \Exception('400 Bad Request Указан некорректный объем склада');
+            }
             $this->warehouseRepository->checkWarehouse(0, $address);
             return $this->warehouseRepository->addNewWarehouse($address, $capacity);
         } else {
@@ -34,6 +37,9 @@ class WarehouseService
 
     public function updateWarehouse($warehouseId, $address, $capacity)
     {
+        if($capacity <= 0){
+            throw new \Exception('400 Bad Request Указан некорректный объем склада');
+        }
         $this->warehouseRepository->checkWarehouse($warehouseId, $address);
         $warehouse = $this->warehouseRepository->getWarehouse($warehouseId);
         if (isset($warehouse)) {
@@ -102,6 +108,9 @@ class WarehouseService
                         $item = $this->itemRepository->getItem($key);
                         if (is_null($item))
                             throw new \Exception("400 Bad Request Товар с id:" . $key . " недоступен или не существует", 400);
+                        if($val <= 0) {
+                            throw new \Exception('400 Bad Request Указано некорректное колличество товара ' . $item->getName(), 400);
+                        }
                         $itemsList[$key] = new ItemPack($item, $val);
                         if ($whOut->getItemPack($key)->getQuantity() < $val) {
                             throw new \Exception('400 Bad Request На складе по адресу ' . $whOut->getAddress() . ' недостаточно товара ' . $item->getName(), 400);
@@ -116,7 +125,7 @@ class WarehouseService
                     foreach ($itemsList as $item) {
                         $this->warehouseRepository->addItemInWarehouse($whIn, $item->getId(), $item->getQuantity());
                         $this->warehouseRepository->removeItemFromWarehouse($whOut, $item->getId(), $item->getQuantity());
-                        $output = $output . $item->getName() . " " . $item->getQuantity() . "\n";
+                        $output = $output . $item->getName() . " " . $item->getQuantity() . " ед.\n";
                     }
                     $this->transactionRepository->addNewTransaction($whIn->getId(), $whOut->getId(), $itemsList);
                     return $output;
@@ -142,6 +151,9 @@ class WarehouseService
                     $item = $this->itemRepository->getItem($key);
                     if (is_null($item))
                         throw new \Exception("400 Bad Request Товар с id:" . $key . " недоступен или не существует", 400);
+                    if($val <= 0) {
+                        throw new \Exception('400 Bad Request Указано некорректное колличество товара ' . $item->getName(), 400);
+                    }
                     $itemsList[$key] = new ItemPack($item, $val);
                     $totalSize += $item->getSize() * $val;
                 }
@@ -151,7 +163,7 @@ class WarehouseService
                 $output = "На склад по адресу " . $whIn->getAddress() . " отправленно: \n";
                 foreach ($itemsList as $itemPack) {
                     $this->warehouseRepository->addItemInWarehouse($whIn, $itemPack->getId(), $itemPack->getQuantity());
-                    $output = $output . $itemPack->getName() . " " . $itemPack->getQuantity() . "\n";
+                    $output = $output . $itemPack->getName() . " " . $itemPack->getQuantity() . " ед.\n";
                 }
                 $this->transactionRepository->addNewTransaction($whIn->getId(), null, $itemsList);
                 return $output;
@@ -173,6 +185,9 @@ class WarehouseService
                     $item = $this->itemRepository->getItem($key);
                     if (is_null($item))
                         throw new \Exception("400 Bad Request Данный товар недоступен или не существует", 400);
+                    if($val <= 0) {
+                        throw new \Exception('400 Bad Request Указано некорректное колличество товара ' . $item->getName(), 400);
+                    }
                     $itemsList[$key] = new ItemPack($item, $val);
                     if ($whOut->getItemPack($key)->getQuantity() < $val) {
                         throw new \Exception('400 Bad Request На складе по адресу ' . $whOut->getAddress() . ' недостаточно товара ' . $item->getName(), 400);
@@ -181,7 +196,7 @@ class WarehouseService
                 $output = "Со склада по адресу " . $whOut->getAddress() . " отправленно: \n";
                 foreach ($itemsList as $item) {
                     $this->warehouseRepository->removeItemFromWarehouse($whOut, $item->getId(), $item->getQuantity());
-                    $output = $output . $item->getName() . " " . $item->getQuantity() . "\n";
+                    $output = $output . $item->getName() . " " . $item->getQuantity() . " ед.\n";
                 }
                 $this->transactionRepository->addNewTransaction(null, $whOut->getId(), $itemsList);
                 return $output;

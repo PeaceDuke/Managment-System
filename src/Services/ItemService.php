@@ -30,6 +30,9 @@ class ItemService
     public function addNewItem($name, $type, $price, $size)
     {
         if(isset($name) && isset($type) && isset($price) && isset($size)) {
+            if($price <= 0 || $size <= 0){
+                throw new \Exception('400 Bad Request Пареметры должны быть больше ноля');
+            }
             $this->itemRepository->checkItem(0, $name, $type);
             return $this->itemRepository->addNewItem($name, $type, $price, $size);
         } else {
@@ -39,6 +42,9 @@ class ItemService
 
     public function updateItem($itemId, $name, $type, $price, $size)
     {
+        if($price <= 0 || $size <= 0){
+            throw new \Exception('400 Bad Request Пареметры должны быть больше ноля');
+        }
         $this->itemRepository->checkItem($itemId, $name, $type);
         $item = $this->getItem($itemId);
         if (isset($item)) {
